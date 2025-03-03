@@ -23,27 +23,27 @@ import com.vaadin.flow.theme.lumo.LumoIcon;
 
 public class InformationStep extends StepComponent<InformationForm> {
 
-	private final transient InformationForm versicherungsnehmerForm;
-	private final Binder<InformationForm> versicherungsnehmerFormBinder = new Binder<>();
+	private final transient InformationForm customerForm;
+	private final Binder<InformationForm> customerFormBinder = new Binder<>();
 
-	public InformationStep(String label, InformationForm versicherungsnehmerForm) {
-		super(label, versicherungsnehmerForm);
-		this.versicherungsnehmerForm = versicherungsnehmerForm;
+	public InformationStep(String label, InformationForm customerForm) {
+		super(label, customerForm);
+		this.customerForm = customerForm;
 		VerticalLayout content = new VerticalLayout();
 
-		if (this.versicherungsnehmerForm.getNewPlaceValueList() == null ||
-			this.versicherungsnehmerForm.getNewPlaceValueList().isEmpty()) {
-			this.versicherungsnehmerForm.setNewPlaceValueList(new ArrayList<>());
+		if (this.customerForm.getNewPlaceValueList() == null ||
+			this.customerForm.getNewPlaceValueList().isEmpty()) {
+			this.customerForm.setNewPlaceValueList(new ArrayList<>());
 		}
-		if (this.versicherungsnehmerForm.getRemovedPlaceLists() == null ||
-			this.versicherungsnehmerForm.getRemovedPlaceLists().isEmpty()) {
-			this.versicherungsnehmerForm.setRemovedPlacesList(new ArrayList<>());
+		if (this.customerForm.getRemovedPlaceLists() == null ||
+			this.customerForm.getRemovedPlaceLists().isEmpty()) {
+			this.customerForm.setRemovedPlacesList(new ArrayList<>());
 		}
 		content.add(this.getInfoBox());
 		content.add(this.getPlacesAndDescription());
 		content.add(this.getRemovedPlaces());
 
-		this.versicherungsnehmerFormBinder.setBean(this.versicherungsnehmerForm);
+		this.customerFormBinder.setBean(this.customerForm);
 		this.questionLayout.add(content);
 	}
 
@@ -61,7 +61,7 @@ public class InformationStep extends StepComponent<InformationForm> {
 		IntegerField employeeCount = new IntegerField();
 		employeeCount.setLabel("Number of Employees");
 		employeeCount.setWidth("100%");
-		this.versicherungsnehmerFormBinder.forField(employeeCount)
+		this.customerFormBinder.forField(employeeCount)
 				.bind(InformationForm::getNumberofEmployees, InformationForm::setNumberofEmployees);
 
 		ShowTextAreaOnRadioButton neueUnternehmen = new ShowTextAreaOnRadioButton(
@@ -71,10 +71,10 @@ public class InformationStep extends StepComponent<InformationForm> {
 				"removed a place",
 				"write the removed place into this textArea");
 
-		this.versicherungsnehmerFormBinder.forField(neueUnternehmen)
+		this.customerFormBinder.forField(neueUnternehmen)
 				.bind(InformationForm::getNewPlaceTextField, InformationForm::setNewPlaceTextField);
 
-		this.versicherungsnehmerFormBinder.forField(geloeschteUnternehmen)
+		this.customerFormBinder.forField(geloeschteUnternehmen)
 				.bind(InformationForm::getRemovedPlaceTextField, InformationForm::setRemovedPlaceTextField);
 
 		this.pdfComponents.add(neueUnternehmen);
@@ -100,7 +100,7 @@ public class InformationStep extends StepComponent<InformationForm> {
 
 		this.pdfComponents.add(radioButtonComponent);
 
-		this.versicherungsnehmerFormBinder.forField(radioButtonComponent)
+		this.customerFormBinder.forField(radioButtonComponent)
 				.bind(InformationForm::getNewPlaceValueRadioButton, InformationForm::setNewPlaceValueRadioButton);
 		VerticalLayout newRiskAddressCluster = new VerticalLayout();
 
@@ -115,10 +115,10 @@ public class InformationStep extends StepComponent<InformationForm> {
 			PlaceValueComponent risikoortComponent = new PlaceValueComponent();
 			PlaceValues risikoortFunnyValuese = new PlaceValues();
 			risikoortComponent.getBinder().setBean(risikoortFunnyValuese);
-			this.versicherungsnehmerForm.getNewPlaceValueList().add(risikoortFunnyValuese);
+			this.customerForm.getNewPlaceValueList().add(risikoortFunnyValuese);
 			this.pdfComponents.add(risikoortComponent);
 			Button deleteButton =
-					this.getDeleteButton(risikoortComponent, this.versicherungsnehmerForm.getNewPlaceValueList(),
+					this.getDeleteButton(risikoortComponent, this.customerForm.getNewPlaceValueList(),
 							risikoortFunnyValuese);
 			newRiskAddressCluster.add(deleteButton);
 			newRiskAddressCluster.add(risikoortComponent);
@@ -129,18 +129,18 @@ public class InformationStep extends StepComponent<InformationForm> {
 		rowWithRadioButtons.add(radioButtonComponent, generateMoreRisikoorteButton);
 		layout.add(rowWithRadioButtons);
 
-		if (this.versicherungsnehmerForm.getNewPlaceValueList().isEmpty()) {
+		if (this.customerForm.getNewPlaceValueList().isEmpty()) {
 			PlaceValueComponent risikoortComponent = new PlaceValueComponent();
 			PlaceValues risikoortFunnyValuese = new PlaceValues();
 			risikoortComponent.getBinder().setBean(risikoortFunnyValuese);
-			this.versicherungsnehmerForm.getNewPlaceValueList().add(risikoortFunnyValuese);
+			this.customerForm.getNewPlaceValueList().add(risikoortFunnyValuese);
 			this.pdfComponents.add(risikoortComponent);
 			risikoortComponent.setVisible(false);
 			newRiskAddressCluster.setVisible(false);
 			newRiskAddressCluster.add(risikoortComponent);
 		} else {
 			AtomicInteger counter = new AtomicInteger();
-			this.versicherungsnehmerForm.getNewPlaceValueList().forEach(risikoortFunnyValuese -> {
+			this.customerForm.getNewPlaceValueList().forEach(risikoortFunnyValuese -> {
 				PlaceValueComponent risikoortComponent = new PlaceValueComponent();
 				if (risikoortFunnyValuese == null) {
 					risikoortFunnyValuese = new PlaceValues();
@@ -149,7 +149,7 @@ public class InformationStep extends StepComponent<InformationForm> {
 				// only show delete button when not first iteration of component
 				if (counter.getAndIncrement() != 0) {
 					Button deleteButton =
-							this.getDeleteButton(risikoortComponent, this.versicherungsnehmerForm.getNewPlaceValueList(),
+							this.getDeleteButton(risikoortComponent, this.customerForm.getNewPlaceValueList(),
 									risikoortFunnyValuese);
 					newRiskAddressCluster.add(deleteButton);
 				}
@@ -182,7 +182,7 @@ public class InformationStep extends StepComponent<InformationForm> {
 				new RadioButton(true, "yes"),
 				new RadioButton(false, "no")
 		);
-		this.versicherungsnehmerFormBinder.forField(radioButtonComponent)
+		this.customerFormBinder.forField(radioButtonComponent)
 				.bind(InformationForm::getAufgegebeneRisikoOrtListRadioButton,
 						InformationForm::setAufgegebeneRisikoOrtListRadioButton);
 		this.pdfComponents.add(radioButtonComponent);
@@ -199,10 +199,10 @@ public class InformationStep extends StepComponent<InformationForm> {
 			AddressComponent addressComponent = new AddressComponent();
 			AddressField risikoortAdresse = new AddressField();
 			addressComponent.getBinder().setBean(risikoortAdresse);
-			this.versicherungsnehmerForm.getRemovedPlaceLists().add(risikoortAdresse);
+			this.customerForm.getRemovedPlaceLists().add(risikoortAdresse);
 			this.pdfComponents.add(addressComponent);
 			Button deleteButton =
-					this.getDeleteButton(addressComponent, this.versicherungsnehmerForm.getRemovedPlaceLists(), risikoortAdresse);
+					this.getDeleteButton(addressComponent, this.customerForm.getRemovedPlaceLists(), risikoortAdresse);
 			deletedAddressCluster.add(deleteButton);
 			deletedAddressCluster.add(addressComponent);
 		});
@@ -211,18 +211,18 @@ public class InformationStep extends StepComponent<InformationForm> {
 		Paragraph moreParagraph = new Paragraph("removed more?");
 		moreParagraph.setVisible(false);
 
-		if (this.versicherungsnehmerForm.getRemovedPlaceLists().isEmpty()) {
+		if (this.customerForm.getRemovedPlaceLists().isEmpty()) {
 			AddressField risikoortAdresse = new AddressField();
 			AddressComponent addressComponent = new AddressComponent();
 			addressComponent.getBinder().setBean(risikoortAdresse);
 			this.pdfComponents.add(addressComponent);
-			this.versicherungsnehmerForm.getRemovedPlaceLists().add(risikoortAdresse);
+			this.customerForm.getRemovedPlaceLists().add(risikoortAdresse);
 			addressComponent.setVisible(false);
 			deletedAddressCluster.setVisible(false);
 			deletedAddressCluster.add(addressComponent);
 		} else {
 			AtomicInteger counter = new AtomicInteger();
-			this.versicherungsnehmerForm.getRemovedPlaceLists().forEach(risikoortAdresse -> {
+			this.customerForm.getRemovedPlaceLists().forEach(risikoortAdresse -> {
 				AddressComponent addressComponent = new AddressComponent();
 				if (risikoortAdresse == null) {
 					risikoortAdresse = new AddressField();
@@ -231,7 +231,7 @@ public class InformationStep extends StepComponent<InformationForm> {
 				// only show delete button when not first iteration of component
 				if (counter.getAndIncrement() != 0) {
 					Button deleteButton =
-							this.getDeleteButton(addressComponent, this.versicherungsnehmerForm.getRemovedPlaceLists(),
+							this.getDeleteButton(addressComponent, this.customerForm.getRemovedPlaceLists(),
 									risikoortAdresse);
 					deletedAddressCluster.add(deleteButton);
 				}

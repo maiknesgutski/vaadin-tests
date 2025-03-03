@@ -56,12 +56,12 @@ public class ChangeNotification extends Composite<VerticalLayout> implements Has
 		this.sendButton.addClickListener(clickEvent -> saveAndSend());
 
 
-		InformationStep versicherungsnehmerStep =
+		InformationStep customerStep =
 				new InformationStep("places and values",
 						new InformationForm());
 
 
-		this.stepComponents = new ArrayList<>(Arrays.asList(versicherungsnehmerStep));
+		this.stepComponents = new ArrayList<>(Arrays.asList(customerStep));
 
 
 		this.industryForm = new FormComponent(this.stepComponents, this.page);
